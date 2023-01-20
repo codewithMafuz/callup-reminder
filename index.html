@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>callUp+</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-dark bg-primary navbar-expand-lg position-fixed top-0 start-0 w-100 mode-changable-dark"
+            style="z-index: 1031;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#" style="font-size: 1.5rem;"><b>callUp+</b></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation" id="toggleMenuBar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item m-1">
+                            <button id="alarmsBtn" onclick="goToPage(this)" type="button"
+                                class="pagesBtn btn btn-primary d-flex flex-row border2px">
+                                <i class="bi bi-stopwatch"></i>
+                                <div class="px-2 translate-top-2px">Alarms</div>
+                            </button>
+                        </li>
+                        <li class="nav-item m-1">
+                            <button id="azanBtn" onclick="goToPage(this)" type="button"
+                                class="pagesBtn btn btn-primary d-flex flex-row">
+                                <i class="bi bi-soundwave"></i>
+                                <div class="px-2 translate-top-2px">Azans</div>
+                            </button>
+                        </li>
+                        <li class="nav-item re-margin m-1">
+                            <button id="featuresBtn" onclick="goToPage(this)" type="button"
+                                class="pagesBtn btn btn-primary d-flex flex-row">
+                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                                <div class="px-2 translate-top-2px">Features</div>
+                            </button>
+                        </li>
+                        <li class="nav-item m-1">
+                            <button id="dataBtn" type="button" class="btn btn-primary d-flex flex-row"
+                                data-bs-toggle="modal" data-bs-target="#data">
+                                <i class="bi bi-hdd-stack"></i>
+                                <div class="px-2 translate-top-2px">Data</div>
+                            </button>
+                        </li>
+                        <li class="nav-item m-1">
+                            <button name="setting" type="button" class="btn btn-primary d-flex flex-row"
+                                data-bs-toggle="modal" data-bs-target="#setting">
+                                <i class="bi bi-gear-fill"></i>
+                                <div class="px-2 translate-top-2px">Setting</div>
+                            </button>
+                        </li>
+                        <li class="nav-item m-1">
+                            <button type="button" class="btn btn-primary d-flex flex-row" data-bs-toggle="modal"
+                                data-bs-target="#helps">
+                                <i class="bi bi-question-circle"></i>
+                                <div class="px-2 translate-top-2px">Helps</div>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main style="min-height:87.9vh;padding-top: 70px;" class="homepageDisplay mode-changable-light">
+
+        <!-- alarms page -->
+        <div class="pages alarmsPage" id="alarmsPage">
+
+            <!-- add or set alarm input related -->
+            <section class="inputSection container w-100">
+                <div id="alertBox"></div>
+
+                <div class="card my-2 mode-changable-light">
+                    <div class="card-body">
+                        <h5 class="card-title my-3 text-center">Alarm Setup</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Add a note if you want to remind something</h6>
+                        <input id="notesAlarmInput" type="text" class="mb-3 w-50 form-control"
+                            placeholder="Something.."></input>
+                        <h6 class="card-subtitle mb-2 text-muted">Set the date and time for alarm</h6>
+                        <input id="alarmInput" type="datetime-local" class="mb-3 w-50 form-control"></input>
+                        <br>
+                        <button id="setAlarm" class="btn btn-primary">Add alarm</button>
+                    </div>
+                </div>
+
+            </section>
+            <!-- delete all alarms prompt body -->
+
+            <section class="setAlarmListContainer container pt-3 mode-changable-light">
+                <div class="d-flex justify-content-between">
+                    <h2 class="title">Alarms</h2>
+                    <div>
+                        <p style="font-size: 1.55rem;margin-bottom: 0;">Total <span id="totalAlarm"></span></p>
+                    </div>
+                    <div class="filtering-box-alarms d-flex align-items-center justify-content-center">
+                        <div id="filtering-icons">
+                            <i class="bi bi-filter-left filter-alarms" id="Latest-First"
+                                title="Sorted by latest added alarm first"></i>
+                            <i class="bi bi-filter-right filter-alarms none" id="Oldest-First"
+                                title="Sorted by oldest added alarm first"></i>
+                            <i class="bi bi-filter filter-alarms none" id="Grouping"
+                                title="Sorted by grouping by time"></i>
+                        </div>
+                        <p class="bold m-0 px-1" id="filtering-msg">Latest First</p>
+                    </div>
+                    <button id="deleteAllAlarms" type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop">
+                        Delete all alarms
+                    </button>
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Deleting Alert</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    If you click ok then all of your alarms will be deleted from localstorage
+                                    permanently,
+                                    are you sure you want to delete all alarms ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" id="acceptConfirmation"
+                                        data-bs-dismiss="modal">Yes</button>
+                                    <button type="button" class="btn btn-primary"
+                                        id="cancelConfirmation">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="accordion m-3" id="setAlarmList">
+                </div>
+            </section>
+
+        </div>
+
+        <!-- azans page -->
+        <div class="pages azanPage none" id="azanPage">
+            <div class="container" style="width:100%;overflow-x:hidden;">
+                <div class="collapse show">
+                    <div class="alert alert-light border bold" role="alert" id="boxRemember">
+                        <h4 class="text-center my-1">Remember ! </h4><br>
+                        <div class="flex-right">
+                            <button class="btn btn-close" onclick="this.parentElement.parentElement.remove()"></button>
+                        </div>
+                        <li>
+                            If country is wrong, data will be shown accordion to city name, now city is <span
+                                id="cityOf"></span><br></li>
+                        <li>If you select any city that not in your country, you will probably get
+                            wrong timings</li>
+                        <li>Sometimes adhan or azan times can be few minutes difference, specially in fazr and asar for
+                            multiple calculation methods. Now calculated according to popular method <span
+                                class="spanRed">(Muslim World League)</span></li>
+                        <li>If stack network or other issue, just <a class="pointer px-1 mx-2 btn-sm"
+                                onclick="toReload()">Reload</a> or more good will be to reset<a
+                                class="pointer px-1 mx-2 btn-sm" onclick="resetPage()">Reset</a></li>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-around" id="enterBox">
+                        <p class="my-5 w-45">Select your country</p>
+                        <p class="my-5 w-45">Enter your city</p>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-around">
+                        <select id="country" name="country" class="form-control w-45 pressElm">
+                            <option value="AF">Afghanistan</option>
+                            <option value="AX">Aland Islands</option>
+                            <option value="AL">Albania</option>
+                            <option value="DZ">Algeria</option>
+                            <option value="AS">American Samoa</option>
+                            <option value="AD">Andorra</option>
+                            <option value="AO">Angola</option>
+                            <option value="AI">Anguilla</option>
+                            <option value="AQ">Antarctica</option>
+                            <option value="AG">Antigua and Barbuda</option>
+                            <option value="AR">Argentina</option>
+                            <option value="AM">Armenia</option>
+                            <option value="AW">Aruba</option>
+                            <option value="AU">Australia</option>
+                            <option value="AT">Austria</option>
+                            <option value="AZ">Azerbaijan</option>
+                            <option value="BS">Bahamas</option>
+                            <option value="BH">Bahrain</option>
+                            <option selected value="BD">Bangladesh</option>
+                            <option value="BB">Barbados</option>
+                            <option value="BY">Belarus</option>
+                            <option value="BE">Belgium</option>
+                            <option value="BZ">Belize</option>
+                            <option value="BJ">Benin</option>
+                            <option value="BM">Bermuda</option>
+                            <option value="BT">Bhutan</option>
+                            <option value="BO">Bolivia</option>
+                            <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+                            <option value="BA">Bosnia and Herzegovina</option>
+                            <option value="BW">Botswana</option>
+                            <option value="BV">Bouvet Island</option>
+                            <option value="BR">Brazil</option>
+                            <option value="IO">British Indian Ocean Territory</option>
+                            <option value="BN">Brunei Darussalam</option>
+                            <option value="BG">Bulgaria</option>
+                            <option value="BF">Burkina Faso</option>
+                            <option value="BI">Burundi</option>
+                            <option value="KH">Cambodia</option>
+                            <option value="CM">Cameroon</option>
+                            <option value="CA">Canada</option>
+                            <option value="CV">Cape Verde</option>
+                            <option value="KY">Cayman Islands</option>
+                            <option value="CF">Central African Republic</option>
+                            <option value="TD">Chad</option>
+                            <option value="CL">Chile</option>
+                            <option value="CN">China</option>
+                            <option value="CX">Christmas Island</option>
+                            <option value="CC">Cocos (Keeling) Islands</option>
+                            <option value="CO">Colombia</option>
+                            <option value="KM">Comoros</option>
+                            <option value="CG">Congo</option>
+                            <option value="CD">Congo, Democratic Republic of the Congo</option>
+                            <option value="CK">Cook Islands</option>
+                            <option value="CR">Costa Rica</option>
+                            <option value="CI">Cote D'Ivoire</option>
+                            <option value="HR">Croatia</option>
+                            <option value="CU">Cuba</option>
+                            <option value="CW">Curacao</option>
+                            <option value="CY">Cyprus</option>
+                            <option value="CZ">Czech Republic</option>
+                            <option value="DK">Denmark</option>
+                            <option value="DJ">Djibouti</option>
+                            <option value="DM">Dominica</option>
+                            <option value="DO">Dominican Republic</option>
+                            <option value="EC">Ecuador</option>
+                            <option value="EG">Egypt</option>
+                            <option value="SV">El Salvador</option>
+                            <option value="GQ">Equatorial Guinea</option>
+                            <option value="ER">Eritrea</option>
+                            <option value="EE">Estonia</option>
+                            <option value="ET">Ethiopia</option>
+                            <option value="FK">Falkland Islands (Malvinas)</option>
+                            <option value="FO">Faroe Islands</option>
+                            <option value="FJ">Fiji</option>
+                            <option value="FI">Finland</option>
+                            <option value="FR">France</option>
+                            <option value="GF">French Guiana</option>
+                            <option value="PF">French Polynesia</option>
+                            <option value="TF">French Southern Territories</option>
+                            <option value="GA">Gabon</option>
+                            <option value="GM">Gambia</option>
+                            <option value="GE">Georgia</option>
+                            <option value="DE">Germany</option>
+                            <option value="GH">Ghana</option>
+                            <option value="GI">Gibraltar</option>
+                            <option value="GR">Greece</option>
+                            <option value="GL">Greenland</option>
+                            <option value="GD">Grenada</option>
+                            <option value="GP">Guadeloupe</option>
+                            <option value="GU">Guam</option>
+                            <option value="GT">Guatemala</option>
+                            <option value="GG">Guernsey</option>
+                            <option value="GN">Guinea</option>
+                            <option value="GW">Guinea-Bissau</option>
+                            <option value="GY">Guyana</option>
+                            <option value="HT">Haiti</option>
+                            <option value="HM">Heard Island and Mcdonald Islands</option>
+                            <option value="VA">Holy See (Vatican City State)</option>
+                            <option value="HN">Honduras</option>
+                            <option value="HK">Hong Kong</option>
+                            <option value="HU">Hungary</option>
+                            <option value="IS">Iceland</option>
+                            <option value="IN">India</option>
+                            <option value="ID">Indonesia</option>
+                            <option value="IR">Iran, Islamic Republic of</option>
+                            <option value="IQ">Iraq</option>
+                            <option value="IE">Ireland</option>
+                            <option value="IM">Isle of Man</option>
+                            <option value="IL">Israel</option>
+                            <option value="IT">Italy</option>
+                            <option value="JM">Jamaica</option>
+                            <option value="JP">Japan</option>
+                            <option value="JE">Jersey</option>
+                            <option value="JO">Jordan</option>
+                            <option value="KZ">Kazakhstan</option>
+                            <option value="KE">Kenya</option>
+                            <option value="KI">Kiribati</option>
+                            <option value="KP">Korea, Democratic People's Republic of</option>
+                            <option value="KR">Korea, Republic of</option>
+                            <option value="XK">Kosovo</option>
+                            <option value="KW">Kuwait</option>
+                            <option value="KG">Kyrgyzstan</option>
+                            <option value="LA">Lao People's Democratic Republic</option>
+                            <option value="LV">Latvia</option>
+                            <option value="LB">Lebanon</option>
+                            <option value="LS">Lesotho</option>
+                            <option value="LR">Liberia</option>
+                            <option value="LY">Libyan Arab Jamahiriya</option>
+                            <option value="LI">Liechtenstein</option>
+                            <option value="LT">Lithuania</option>
+                            <option value="LU">Luxembourg</option>
+                            <option value="MO">Macao</option>
+                            <option value="MK">Macedonia, the Former Yugoslav Republic of</option>
+                            <option value="MG">Madagascar</option>
+                            <option value="MW">Malawi</option>
+                            <option value="MY">Malaysia</option>
+                            <option value="MV">Maldives</option>
+                            <option value="ML">Mali</option>
+                            <option value="MT">Malta</option>
+                            <option value="MH">Marshall Islands</option>
+                            <option value="MQ">Martinique</option>
+                            <option value="MR">Mauritania</option>
+                            <option value="MU">Mauritius</option>
+                            <option value="YT">Mayotte</option>
+                            <option value="MX">Mexico</option>
+                            <option value="FM">Micronesia, Federated States of</option>
+                            <option value="MD">Moldova, Republic of</option>
+                            <option value="MC">Monaco</option>
+                            <option value="MN">Mongolia</option>
+                            <option value="ME">Montenegro</option>
+                            <option value="MS">Montserrat</option>
+                            <option value="MA">Morocco</option>
+                            <option value="MZ">Mozambique</option>
+                            <option value="MM">Myanmar</option>
+                            <option value="NA">Namibia</option>
+                            <option value="NR">Nauru</option>
+                            <option value="NP">Nepal</option>
+                            <option value="NL">Netherlands</option>
+                            <option value="AN">Netherlands Antilles</option>
+                            <option value="NC">New Caledonia</option>
+                            <option value="NZ">New Zealand</option>
+                            <option value="NI">Nicaragua</option>
+                            <option value="NE">Niger</option>
+                            <option value="NG">Nigeria</option>
+                            <option value="NU">Niue</option>
+                            <option value="NF">Norfolk Island</option>
+                            <option value="MP">Northern Mariana Islands</option>
+                            <option value="NO">Norway</option>
+                            <option value="OM">Oman</option>
+                            <option value="PK">Pakistan</option>
+                            <option value="PW">Palau</option>
+                            <option value="PS">Palestinian Territory, Occupied</option>
+                            <option value="PA">Panama</option>
+                            <option value="PG">Papua New Guinea</option>
+                            <option value="PY">Paraguay</option>
+                            <option value="PE">Peru</option>
+                            <option value="PH">Philippines</option>
+                            <option value="PN">Pitcairn</option>
+                            <option value="PL">Poland</option>
+                            <option value="PT">Portugal</option>
+                            <option value="PR">Puerto Rico</option>
+                            <option value="QA">Qatar</option>
+                            <option value="RE">Reunion</option>
+                            <option value="RO">Romania</option>
+                            <option value="RU">Russian Federation</option>
+                            <option value="RW">Rwanda</option>
+                            <option value="BL">Saint Barthelemy</option>
+                            <option value="SH">Saint Helena</option>
+                            <option value="KN">Saint Kitts and Nevis</option>
+                            <option value="LC">Saint Lucia</option>
+                            <option value="MF">Saint Martin</option>
+                            <option value="PM">Saint Pierre and Miquelon</option>
+                            <option value="VC">Saint Vincent and the Grenadines</option>
+                            <option value="WS">Samoa</option>
+                            <option value="SM">San Marino</option>
+                            <option value="ST">Sao Tome and Principe</option>
+                            <option value="SA">Saudi Arabia</option>
+                            <option value="SN">Senegal</option>
+                            <option value="RS">Serbia</option>
+                            <option value="CS">Serbia and Montenegro</option>
+                            <option value="SC">Seychelles</option>
+                            <option value="SL">Sierra Leone</option>
+                            <option value="SG">Singapore</option>
+                            <option value="SX">Sint Maarten</option>
+                            <option value="SK">Slovakia</option>
+                            <option value="SI">Slovenia</option>
+                            <option value="SB">Solomon Islands</option>
+                            <option value="SO">Somalia</option>
+                            <option value="ZA">South Africa</option>
+                            <option value="GS">South Georgia and the South Sandwich Islands</option>
+                            <option value="SS">South Sudan</option>
+                            <option value="ES">Spain</option>
+                            <option value="LK">Sri Lanka</option>
+                            <option value="SD">Sudan</option>
+                            <option value="SR">Suriname</option>
+                            <option value="SJ">Svalbard and Jan Mayen</option>
+                            <option value="SZ">Swaziland</option>
+                            <option value="SE">Sweden</option>
+                            <option value="CH">Switzerland</option>
+                            <option value="SY">Syrian Arab Republic</option>
+                            <option value="TW">Taiwan, Province of China</option>
+                            <option value="TJ">Tajikistan</option>
+                            <option value="TZ">Tanzania, United Republic of</option>
+                            <option value="TH">Thailand</option>
+                            <option value="TL">Timor-Leste</option>
+                            <option value="TG">Togo</option>
+                            <option value="TK">Tokelau</option>
+                            <option value="TO">Tonga</option>
+                            <option value="TT">Trinidad and Tobago</option>
+                            <option value="TN">Tunisia</option>
+                            <option value="TR">Turkey</option>
+                            <option value="TM">Turkmenistan</option>
+                            <option value="TC">Turks and Caicos Islands</option>
+                            <option value="TV">Tuvalu</option>
+                            <option value="UG">Uganda</option>
+                            <option value="UA">Ukraine</option>
+                            <option value="AE">United Arab Emirates</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="US">United States</option>
+                            <option value="UM">United States Minor Outlying Islands</option>
+                            <option value="UY">Uruguay</option>
+                            <option value="UZ">Uzbekistan</option>
+                            <option value="VU">Vanuatu</option>
+                            <option value="VE">Venezuela</option>
+                            <option value="VN">Viet Nam</option>
+                            <option value="VG">Virgin Islands, British</option>
+                            <option value="VI">Virgin Islands, U.s.</option>
+                            <option value="WF">Wallis and Futuna</option>
+                            <option value="EH">Western Sahara</option>
+                            <option value="YE">Yemen</option>
+                            <option value="ZM">Zambia</option>
+                            <option value="ZW">Zimbabwe</option>
+                        </select>
+                        <input type="text" id="city" class="form-control w-45 pressElm" value="Sylhet">
+                    </div>
+                    <div class="flex-center justify-content-around w-100 my-2">
+                        <button class="btn btn-primary" id="setLocation" disabled>Set Location</button>
+                    </div>
+                    <h4 class="my-3">Azan or Adhan will be called according to this city times (<span
+                            id="showAccordingToCity">...</span>)</h4>
+                    <div id="azanVoice">
+                    </div>
+                    <hr>
+                </div>
+                <hr>
+                <h3 class="text-center my-4">Today (<span class="todayDate">...</span>)</h3>
+                <div class="table-wrap">
+
+                    <table class="table table-hover table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Fazr</th>
+                                <th scope="col">Sunrise</th>
+                                <th scope="col">Duhr</th>
+                                <th scope="col">Asar</th>
+                                <th scope="col">Sunset</th>
+                                <th scope="col">Magrib</th>
+                                <th scope="col">Isha</th>
+                                <th scope="col">Imsak (End Sehri)</th>
+                                <th scope="col">Midnight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody" class="table-group-divider">
+                            <div class="flex-center spinner">
+                                <div class="spinner-grow" role="status">
+                                    <span class="visually-hidden">...</span>
+                                </div>
+                            </div>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 class="text-center my-4 tab2">More Of This Month (<span class="todayMonth">...</span>)</h3>
+                <div class="table-wrap tab2">
+
+                    <table class="table table-hover table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Fazr</th>
+                                <th scope="col">Sunrise</th>
+                                <th scope="col">Duhr</th>
+                                <th scope="col">Asar</th>
+                                <th scope="col">Sunset</th>
+                                <th scope="col">Magrib</th>
+                                <th scope="col">Isha</th>
+                                <th scope="col">Imsak (End Sehri)</th>
+                                <th scope="col">Midnight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody2" class="table-group-divider">
+                            <div class="flex-center spinner">
+                                <div class="spinner-grow" role="status">
+                                    <span class="visually-hidden">...</span>
+                                </div>
+                            </div>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </div>
+        <!-- features page -->
+        <div class="pages featuresPage none" id="featuresPage">
+            <div class="container">
+                <h1 class="my-5">Currently nothing in this page</h1>
+            </div>
+        </div>
+
+        <!-- setting prompt body-->
+        <div class="modal fade" id="setting" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content mode-changable-light">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Setting</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="height:70vh;overflow-y:scroll;overflow-x: hidden;">
+                        <h5 class="text-center mTB18">Display</h3>
+                            <!-- mode setting -->
+                            <p class="bold mTB10">Theme Mode</p>
+
+
+                            <select id="settingSelectMode" class="form-select form-select-sm"
+                                aria-label=".form-select-sm example">
+                                <option value="bg-light" selected>Light Mode</option>
+                                <option value="bg-dark">Dark Mode</option>
+                            </select>
+                            <!-- azan and alarm tones setting -->
+                            <!-- azan tone setting -->
+                            <h5 class="text-center mTB18">Azan and Alarm</h3>
+                                <p class="bold mTB10">Azan Voice</p>
+                                <select id="settingSelectRingtoneAzan" class="form-control form-select form-select-sm"
+                                    aria-label=".form-select-sm example">
+                                    <option selected>Azan 1</option>
+                                    <option>Azan 2</option>
+                                </select>
+
+
+                                <button class="tackle toneTackle1 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
+                                    id="playAudio1"><i class="px-1 bi bi-play translate-top-2px"></i>Play</button>
+                                <button class="tackle toneTackle1 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
+                                    id="pauseAudio1"><i class="px-1 bi bi-pause translate-top-2px"></i>Pause</button>
+                                <button class="tackle toneTackle1 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
+                                    id="stopAudio1"><i class="px-1 bi bi-stop-fill translate-top-2px"></i>Stop</button>
+                                <!-- alarm tone setting -->
+                                <p class="bold mTB10">Alarm Ringtone</p>
+
+                                <select id="settingSelectRingtoneAlarm" class="form-control form-select form-select-sm"
+                                    aria-label=".form-select-sm example">
+                                    <option selected>Alarm 1
+                                    </option>
+                                    <option>Alarm 2
+                                    </option>
+
+                                </select>
+                                <button class="tackle toneTackle2 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
+                                    id="playAudio2"><i class="px-1 bi bi-play translate-top-2px"></i>Play</button>
+                                <button class="tackle toneTackle2 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
+                                    id="pauseAudio2"><i class="px-1 bi bi-pause translate-top-2px"></i>Pause</button>
+                                <button class="tackle toneTackle2 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
+                                    id="stopAudio2"><i class="px-1 bi bi-stop-fill translate-top-2px"></i>Stop</button>
+                                <!-- some settings of alarm -->
+                                <p class="bold mTB10">Alarms setting</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input switch-input-left" type="checkbox" role="switch"
+                                        id="deleteRingedAlarm" onclick="ringedAlarmDeleteOnOrOff(this)">
+                                    <label class="form-check-label switch-label-right" for="deleteRingedAlarm">Delete
+                                        ringed alarms
+                                        automatically</label>
+                                </div>
+                                <!-- reset and others -->
+                                <h5 class="text-center mTB18">Reset and Others</h5>
+                                <p class="bold mTB10">Reset Page</p>
+                                <button class="btn btn-danger btn-sm text-center" onclick="resetPage()">Reset</button>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="saveSetting" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- data prompt body -->
+        <div class="modal fade" id="data" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content mode-changable-light">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Data</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body" style="height:70vh;overflow-y:scroll;overflow-x: hidden;">
+                        <!-- localstorage size related -->
+                        <div>
+                            <h6 class="mb-4">Localstorage Size (total size : 5MB)</h6>
+                            <div class="progress"
+                                style="background: repeating-linear-gradient(35deg, lightgray, transparent 141px);">
+                                <div class="progress-bar storageFullNowPercentage float-right" role="progressbar"
+                                    aria-label="Example with label" style="width: 0%;" aria-valuenow=""
+                                    aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+                            <div class="position-relative my-2">Full
+                                <span class="badge text-bg-light storageFullNowValue"></span> KB of
+                                <span class="badge text-bg-light">5 MB (5120 KB)</span>
+                                and remaining <span class="badge text-bg-light storageFullNowValueRemaining"></span>
+
+                            </div>
+                        </div>
+                        <!-- transfer data related -->
+                        <div>
+                            <div class="">
+                                <h6 class="my-5 px-2">Export Data</h6>
+                                <p>
+                                    You could export your data to another device by copy localstorage data by click
+                                    on
+                                    copy and then paste it on another device import data option
+                                </p>
+
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" data-bs-title="Copy Data" id="copyDataLocalStorage">
+                                    Copy Data
+                                </button>
+
+
+                            </div>
+
+                        </div>
+                        <div>
+                            <div class="">
+                                <h6 class="my-5 px-2">Import Data</h6>
+                                <p>
+                                    Paste the text that have copied from another device here to get data of your
+                                    another device and click ok to save
+                                </p>
+                                <div>
+                                    <input type="text" placeholder="Paste here" class="from-control outline-none"
+                                        id="importDataText">
+                                    <button class="btn btn-secondary btn-sm mx-3" id="saveDataSection">Save</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- help prompt body -->
+        <div class="modal fade" id="helps" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content mode-changable-light">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Help</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body" style="height:70vh;overflow-y:scroll;overflow-x: hidden;">
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                        aria-controls="flush-collapseOne">
+                                        How to change Theme mode ?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                    aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        You can change mode in <b>Setting >> Theme Mode</b>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                                        aria-controls="flush-collapseTwo">
+                                        How to change Alarm Tone ?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                                    aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        You can change Alarm tone any of both tone in <b>Setting >> Alarm Ringtone</b>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                        aria-controls="flush-collapseThree">
+                                        How to change Azan voice or anounce ?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseThree" class="accordion-collapse collapse"
+                                    aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        You can change Azan voice in <b>Setting >> Azan Voice</b>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseFour" aria-expanded="false"
+                                        aria-controls="flush-collapseFour">
+                                        How could I transfer data to another browser or computer ?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseFour" class="accordion-collapse collapse"
+                                    aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <b>1 >> </b>Click on Data<br>
+                                        <b>2 >> </b>You will see, Export Data heading, below here click on Copy Data<br>
+                                        <b>3 >> </b>Dont copy anything else after coping from there<br>
+                                        <b>4 >> </b>In that browser where you want to transfer, Below Import Data
+                                        heading you will see an input field, now simply paste data without any
+                                        modification there and click Save, and you got it !<br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseFive" aria-expanded="false"
+                                        aria-controls="flush-collapseFive">
+                                        How to reset page ?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseFive" class="accordion-collapse collapse"
+                                    aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <b>1 >> </b>Click on Setting<br>
+                                        <b>2 >> </b>Scroll Down, click reset, and confirm reset. Remember reset will
+                                        delete every data too<br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- permisson for tone -->
+        <div class="modal fade" id="askForPermissionToPlayAudioPrompt" data-bs-backdrop="static"
+            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content mode-changable-light">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Permisson to run tones with sound</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h3 class="font-style1">Please click allow or touch click on page to active sound to your all
+                            reminder tone or audio.</h3> Almost all browser have
+                        an policy that no audio or media
+                        can play with sound without users gesture or click or touch on the website. But in this page
+                        we have to play audio tones with sound for alarms and adhans that you have turned on.
+                        So, you have to click allow to run this page properly and there is nothing harmful or spam
+                        in this page. Every time you reload this page will show this permisson alert/message, so our
+                        request is to do not refresh or reload this page without needs. <br>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button id="allowAudioSound" type="button" class="btn btn-success"
+                            data-bs-dismiss="modal">Allow</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- mobile detected and recommendation prompt -->
+        <div class="modal fade" id="mobileDetected" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content mode-changable-light">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Mobile Detected & Recommendation</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h4>We recomment to use PC / Laptop / Any kind of computer to run this website.</h4>
+                        <p>This website highly integrated and made for Desktop / PC. If you use it in mobile. You might
+                            know following things ...</p>
+                        <li>Do not turn off your phone screen</li>
+                        <li>Keep your backgroun app refresh turn on, on Phone Setting</li>
+                        <li>Do not use to many apps in background, number of apps depend on your phone and ram as well
+                        </li>
+                        <li>Do not use to many tabs in your browser while using this website in background, umber of
+                            tabs depend on your phone and ram as well</li>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button id="mobileDetectedOk" type="button" class="btn btn-success" data-bs-dismiss="modal">Ok,
+                            continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- footer -->
+    <footer
+        class="px-3 mode-changable-dark bg-primary d-flex flex-wrap justify-content-center align-items-center py-3 mt- border-top gap-15">
+        <p class="col-md-4 mb-0 text-muted">2023 © call-up.com by <a href="https://github.com/codewithMafuz"
+                target="_blank">codewithMafuz</a></p>
+
+        <a class="text-center btn text-white btn-floating m-1" style="background-color: #333333;"
+            href="https://github.com/codewithMafuz/callUp" target="_blank" role="button"><i
+                class="fab fa-github"></i></a>
+
+    </footer>
+
+
+
+
+    <!-- links and scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
+    <script src="/js/main.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+        integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css
+    ">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/js/extra.js"></script>
+
+</body>

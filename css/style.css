@@ -1,0 +1,502 @@
+    * {
+        margin: 0;
+        padding: 0;
+        --bs-accordion-active-bg: white !important;
+
+    }
+    table td,table th {
+        overflow: hidden;
+        height: 14px;
+        white-space: nowrap;
+    }
+    table * {
+        text-align: center;
+    }
+    #allowAudioSound {
+        width: 100%;
+        padding: 20px;
+    }
+    :root {
+
+        --bs-accordion-active-bg: white !important;
+    }
+
+    .w-45 {
+        width: 45%;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    div.accordion * {
+        user-select: none;
+    }
+
+    .accordion-body {
+        height: 180px;
+    }
+
+    .h3p {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .half-opacity {
+        opacity: .5;
+    }
+
+    .white {
+        color: white;
+    }
+
+    .flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .accordion-collapse {
+        background: white;
+        border: 1px solid lightgray;
+        width: 95%;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+    }
+
+    .accordion-button {
+        box-shadow: none !important;
+    }
+
+    input {
+        padding: 2px 5px;
+    }
+
+    .setAlarmListContainer * {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .none {
+        display: none;
+    }
+
+    .border2px {
+        border: 2px solid white;
+    }
+
+    .translate-top-2px {
+        padding-bottom: 2px;
+        display: block;
+    }
+
+    .toneTackle1,
+    .toneTackle2 {
+        display: inline-flex !important;
+    }
+
+    .bred {
+        border: 2px solid red;
+    }
+
+    .atTone {
+        margin-left: 10px;
+        height: 30px;
+        padding-top: 1px
+    }
+
+    .blime {
+        border: 2px solid rgb(19, 212, 19);
+    }
+
+    .fixed-center-custom {
+        position: fixed;
+        z-index: 1000000;
+        width: 500px;
+        height: 200px;
+        padding: 10px;
+        top: 50%;
+        left: 50%;
+        margin-top: -100px;
+        margin-left: -250px;
+    }
+
+    .outline-none {
+        outline: none;
+    }
+
+    .mTB18 {
+        margin-top: 18px;
+        margin-bottom: 18px;
+    }
+    .mTB10 {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .modal-content {
+        width: auto;
+        min-width: 420px;
+    }
+
+    .switch-label-right {
+        user-select: none;
+        position: absolute;
+        left: 15px;
+        width: 100%;
+    }
+    .modal-body .accordion-body {
+        height: auto !important;
+    }
+    .switch-input-left {
+        user-select: none;
+        position: absolute;
+        left: 95%;
+    }
+
+    .col-skyblue {
+        color: rgb(47, 127, 158);
+    }
+
+    .col-dgray {
+        color: rgb(71, 69, 69);
+    }
+
+    .re-margin {
+        margin-right: 50px !important;
+    }
+
+    .alert-icon {
+        margin: 0px 20px 0px 10px;
+        font-size: 20px;
+    }
+
+    .alert-div {
+        z-index: 10000;
+        border-radius: 0;
+    }
+
+    .gap-15 {
+        gap: 15px;
+    }
+
+    .bg-primary * {
+        color: white !important;
+    }
+
+    #filtering-icons * {
+        font-size: 1.4rem !important;
+        cursor: pointer;
+        margin-left: 2px;
+    }
+
+    .filtering-box-alarms {
+        width: 130px;
+    }
+
+
+    #editBox {
+        background-color: whitesmoke;
+        top: 15%;
+        opacity: 0;
+    }
+
+    i {
+        cursor: pointer;
+    }
+
+    p.title {
+
+        width: 85% !important;
+        min-width: 120px !important;
+
+    }
+
+    .navbar {
+        height: 68px;
+    }
+
+    footer p {
+        width: auto;
+    }
+
+    .widthSetAlarmAudioDisplay {
+        background-color: white !important;
+        width: 50px !important;
+        height: auto !important;
+    }
+
+    .leftSlide {
+        left: 114% !important;
+    }
+
+    #firstOfRingingDisplay h5 {
+        margin-top: 6px;
+    }
+
+    .whiteCol {
+        color: white !important;
+    }
+
+    .font-style1 {
+        font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    thead tr th {
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-size: 1.1rem !important;
+        color: green !important;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    .pointer {
+        cursor: pointer !important;
+    }
+
+    #enterBox {
+        height: 48px;
+    }
+
+    #enterBox p {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    #cityOf {
+        color: #9d661c !important;
+    }
+
+    .azanAccordionBody {
+        height: 94px;
+        padding: 6px;
+    }
+
+    .azanAccordionItem {
+        height: 40px;
+        padding: 10px;
+    }
+
+    .special-text {
+        font-size: 1.3rem;
+        color: #9d661c !important;
+    }
+
+    #boxRemember h4 {
+        font-size: 1.2rem;
+        height: 5px !important;
+    }
+
+    #showAccordingToCity {
+        color: #9d661c;
+    }
+
+    #maprouter {
+        top: 30vh;
+        left: 30vw;
+        z-index: 10000000;
+    }
+
+    .flex-right {
+        display: flex;
+        width: 100%;
+        justify-content: right;
+        align-items: center;
+    }
+
+    .spanRed {
+        color: #9d661c;
+    }
+
+    @media screen and (max-width:1000px) {
+        
+        .navbar {
+            height: auto !important;
+        }
+
+        .re-margin {
+            margin-right: unset !important;
+            margin-bottom: 40px !important;
+        }
+
+        #setting {
+            width: 100%;
+        }
+
+
+        .modal-content {
+            width: auto;
+            min-width: 500px;
+        }
+
+        .leftSlide {
+            left: 119% !important;
+        }
+    }
+
+    @media screen and (max-width:501px) {
+
+        main,
+        .main,
+        #main {
+            padding-top: 20px !important;
+        }
+
+        .navbar {
+            max-width: 100vw !important;
+        }
+
+        .leftSlide {
+            left: 145% !important;
+        }
+
+
+        .mpx {
+            padding-left: 5px !important;
+            padding-right: 5px !important;
+        }
+
+        .px-1,
+        .px-2,
+        .px-3,
+        .px-4,
+        .px-5 {
+            padding-left: 2px !important;
+            padding-right: 2px !important;
+        }
+
+        .mx-1,
+        .mx-2,
+        .mx-3,
+        .mx-4,
+        .mx-5 {
+            margin-left: 2px !important;
+            margin-right: 2px !important;
+
+        }
+
+        .m-hide {
+            display: none;
+        }
+
+        .modal-content {
+            width: auto;
+            min-width: unset;
+        }
+
+        .column-on-mobile {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .setAlarmListContainer:first-child {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr;
+            justify-content: center !important;
+            align-items: center !important;
+            place-items: center;
+        }
+
+        .setAlarmListContainer .filtering-box-alarms {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+
+        #deleteAllAlarms {
+            font-size: .8rem !important;
+            font-weight: 100 !important;
+            padding: 4px !important;
+        }
+
+        .setAlarmListContainer h2,
+        .setAlarmListContainer p {
+            font-size: .9rem !important;
+            padding-right: 4px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #totalAlarm {
+            margin-left: 2px;
+        }
+        .table-wrap {
+            overflow-x: scroll !important;
+        }
+
+        #setAlarm {
+            padding: 4px 9px !important;
+        }
+
+        header,
+        footer {
+            min-height: 10vh !important;
+        }
+
+        main {
+            min-height: 80vh !important;
+        }
+
+        #boxRemember {
+            overflow-x: hidden !important;
+            padding: 3px 8px 6px 8px !important;
+            font-size: .8rem !important;
+        }
+
+        #boxRemember li {
+            font-size: .8rem;
+        }
+
+        #boxRemember .flex-right {
+            position: relative;
+            top: -15px;
+        }
+
+        #enterBox p {
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        #setLocation {
+            font-size: .9rem;
+            padding: 2px 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            margin-left: 10px !important;
+            margin-right: 10px !important;
+            padding-top: 2px !important;
+            padding-right: 5px !important;
+            padding-left: 2px !important;
+            padding-left: 5px !important;
+        }
+
+        #azanPage h4,
+        #azanPage h3 {
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .my-1,
+        .my-2,
+        .my-3,
+        .my-4 {
+            margin-top: 2px !important;
+            margin-bottom: 2px !important;
+        }
+        table td,table th {
+            overflow: hidden;
+            height: 14px;
+            white-space: nowrap;
+            font-size: 0.75rem;
+        }
+        #allowAudioSound {
+            width: 100%;
+            padding: 20px;
+        }
+    }
