@@ -4,8 +4,8 @@ nullHandleForThisLocalStorageProperty('mode', {
     "modeClassName": "bg-light",
     "modeSelectedIndex": 0
 })
-var defAznSrc = '../audio/Azan0.mp3'
-var defAlrmSrc = '../audio/Alarm0.mp3'
+var defAznSrc = 'audio/Azan0.mp3'
+var defAlrmSrc = 'audio/Alarm0.mp3'
 nullHandleForThisLocalStorageProperty('defaultAzanTone', {
     nthNumberSelected: 0,
     src: defAznSrc
@@ -1035,13 +1035,13 @@ jQuery(document).ready(function ($) {
     }
     let o = {
         nthNumberSelected: 0,
-        src: '../audio/Alarm0.mp3'
+        src: 'audio/Alarm0.mp3'
     }
     $('#settingSelectRingtoneAzan, #settingSelectRingtoneAlarm').on('change', function () {
         const s = this.selectedIndex
         o.nthNumberSelected = s
         const its = (this.id).includes('Alarm') ? 'Alarm' : 'Azan'
-        const sr = `../audio/${its + s}.mp3`
+        const sr = `audio/${its + s}.mp3`
         o.src = sr
         its === 'Azan' ? azanAudio.src = sr : alarmAudio.src = sr
         localStorage.setItem(`default${its}Tone`, JSON.stringify(o))
