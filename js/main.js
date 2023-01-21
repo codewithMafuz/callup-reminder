@@ -1343,7 +1343,3 @@ setTimeout(() => {
 
 
 
-//  just remaining to do---
-// 1 >> helps in html
-// 2 >> reducing variable name and increease performance
-// 3 >> styling properly
