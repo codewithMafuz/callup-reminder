@@ -16,6 +16,9 @@
         width: 100%;
         padding: 20px;
     }
+    .col-red {
+        color: rgb(124, 41, 41);
+    }
     :root {
 
         --bs-accordion-active-bg: white !important;

@@ -97,7 +97,7 @@ function fmt(_) {
 }
 function removeUnknownLocalStorageProperties() {
     const l = localStorage.length
-    const t = ['allAlarmSavedList', 'defaultAlarmTone', 'defaultAzanTone', 'mode', 'setting', 'aboutAzan', 'userInfo', 'todayTimings', 'show']
+    const t = ['allAlarmSavedList', 'defaultAlarmTone', 'defaultAzanTone', 'mode', 'setting', 'aboutAzan', 'userInfo', 'todayTimings', 'autoTurnOnAzan']
     for (let i = 0; i < l; i++) {
         const e = localStorage.key(i)
         if (!t.includes(e)) {
@@ -115,6 +115,20 @@ function getAzanObjects() {
             x.push(o)
         }
     }
+    return x
+}
+function removeAzanObjectsFromSaved() {
+    clearAllTimeouts()
+    const x = []
+    const a = JSON.parse(localStorage.allAlarmSavedList)
+    const _ = a.length
+    for (let i = 0; i < _; i++) {
+        const o = a[i]
+        if (!o.isItForAzan) {
+            x.push(o)
+        }
+    }
+    localStorage.setItem('allAlarmSavedList', JSON.stringify(x))
     return x
 }
 function getDateTimeLocalToDateObj(value) {
@@ -281,7 +295,7 @@ function btnsClearify() {
 function getDateTimeLocalToDateObj(value) {
     return new Date(value)
 }
-function addInLocalStorage(alarmNote, alarmDateTime, alarm = true) {
+function addInLocalStorage(alarmNote, alarmDateTime, alarm = true, doTurnOn = true) {
     if (alarmNote.length === 0) {
         alarmNote = 'Alarm'
     }
@@ -291,7 +305,7 @@ function addInLocalStorage(alarmNote, alarmDateTime, alarm = true) {
         title: alarmNote,
         datetime: alarmDateTime,
         isRunningSetTimeout: false,
-        isTurnedOn: true,
+        isTurnedOn: doTurnOn,
         isDoneRingingOrStarted: false
     }
     nullHandleForThisLocalStorageProperty('allAlarmSavedList')
@@ -618,7 +632,7 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
         let num = -1;
         a.forEach(function (o, i) {
             if (!o.isItForAzan) {
-                num ++
+                num++
                 l++
                 const d = new Date(o.datetime)
                 const id = o.id
@@ -735,7 +749,6 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
     showMsgIfNoAlarm()
     sortBeutify()
 }
-
 function setAlarm(dateAndTimeToSet, note) {
 
     let h = false
@@ -857,6 +870,7 @@ function setModeOfTheme(modeValue, selectedIndex) {
 
 }
 $(window).on("load", function () {
+
     correctIsRunnningSetTimeoutPropertyOfAllUnringed()
     btnsClearify()
     document.body.addEventListener('click', function () {
@@ -883,31 +897,31 @@ $(window).on("load", function () {
 
 
     // azanrelated
-    sessionStorage.removeItem('done')
+
 })
 
 jQuery(document).ready(function ($) {
     // Permissions
-    if (JSON.parse(localStorage.getItem('show')) === null) {
-        fetch('https://api.bigdatacloud.net/data/client-info').
-            then(function (r) {
-                return r.json()
-            }).then(function (r) {
-                if (r.isMobile == true) {
-                    mb = true
-                    $('#mobileDetected').modal('show')
-                    $('#mobileDetectedOk').click(function () {
-                        localStorage.setItem('show', JSON.stringify(true))
-                        $('#askForPermissionToPlayAudioPrompt').modal('show')
-                    })
-                }
-                else {
-                    $('#askForPermissionToPlayAudioPrompt').modal('show')
-                }
-            }).catch(function (_) {
+    $('.mobileDetectedOk').click(function () {
+        location = 'https://www.google.com/'
+    })
+    fetch('https://api.bigdatacloud.net/data/client-info').
+        then(function (r) {
+            return r.json()
+        }).then(function (r) {
+            if (r.isMobile == true) {
+                mb = true
+                $('#mobileDetected').modal('show')
+                localStorage.clear()
+                clearAllTimeouts()
+            }
+            else {
                 $('#askForPermissionToPlayAudioPrompt').modal('show')
-            })
-    }
+            }
+        }).catch(function (_) {
+            $('#askForPermissionToPlayAudioPrompt').modal('show')
+        })
+
     // events on switch inputs
     $('input[role="switch"],.turnOnOrOff').each(function () {
         this.style.userSelect = 'none'
@@ -1093,7 +1107,6 @@ function getUserGeoLocation() {
         return
     });
 }
-
 function sendRequestForAzan(selectedIndx = 0, country = undefined, city = undefined, action = false) {
     tbody.innerHTML =
         `
@@ -1206,7 +1219,12 @@ function showAzanDisplay(selectedIndx = undefined, c = undefined) {
             for (let i = 0; i < l; i++) {
                 const y = convToTody(tms[i])
                 y.setTime(y.getTime() + i)
-                addInLocalStorage(n[i], new Date(y), false)
+                const v = JSON.parse(localStorage.getItem('autoTurnOnAzan'))
+                if (v === null || v === false) {
+                    addInLocalStorage(n[i], new Date(y), false, false)
+                } else {
+                    addInLocalStorage(n[i], new Date(y), false, true)
+                }
             }
         }
 
@@ -1226,6 +1244,21 @@ function convToTody(s) {
     const m = s[1]
     t.setHours(parseInt(h), parseInt(m), 0)
     return t
+}
+if (JSON.parse(localStorage.getItem('autoTurnOnAzan')) === true) {
+    document.getElementById('autoTurnOnAzan').setAttribute('checked', true)
+} else {
+    document.getElementById('autoTurnOnAzan').removeAttribute('checked')
+}
+function setAutoTurnOnAzanOnOrOff(e) {
+    if (e.checked) {
+        localStorage.setItem('autoTurnOnAzan', JSON.stringify(true))
+    }
+    else {
+        localStorage.setItem('autoTurnOnAzan', JSON.stringify(false))
+    }
+    removeAzanObjectsFromSaved()
+    toReload()
 }
 
 // execute functions >>>>>>>>>>>>>>>>>

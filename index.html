@@ -517,7 +517,7 @@
                         <h5 class="text-center mTB18">Display</h3>
                             <!-- mode setting -->
                             <p class="bold mTB10">Theme Mode</p>
-
+                            <hr>
 
                             <select id="settingSelectMode" class="form-select form-select-sm"
                                 aria-label=".form-select-sm example">
@@ -528,6 +528,7 @@
                             <!-- azan tone setting -->
                             <h5 class="text-center mTB18">Azan and Alarm</h3>
                                 <p class="bold mTB10">Azan Voice</p>
+                                <hr>
                                 <select id="settingSelectRingtoneAzan" class="form-control form-select form-select-sm"
                                     aria-label=".form-select-sm example">
                                     <option selected>Azan 1</option>
@@ -537,13 +538,13 @@
 
                                 <button class="tackle toneTackle1 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
                                     id="playAudio1"><i class="px-1 bi bi-play translate-top-2px"></i>Play</button>
-                                <button class="tackle toneTackle1 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
+                                <button disabled class="tackle toneTackle1 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
                                     id="pauseAudio1"><i class="px-1 bi bi-pause translate-top-2px"></i>Pause</button>
-                                <button class="tackle toneTackle1 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
+                                <button disabled class="tackle toneTackle1 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
                                     id="stopAudio1"><i class="px-1 bi bi-stop-fill translate-top-2px"></i>Stop</button>
                                 <!-- alarm tone setting -->
                                 <p class="bold mTB10">Alarm Ringtone</p>
-
+                                <hr>
                                 <select id="settingSelectRingtoneAlarm" class="form-control form-select form-select-sm"
                                     aria-label=".form-select-sm example">
                                     <option selected>Alarm 1
@@ -554,18 +555,28 @@
                                 </select>
                                 <button class="tackle toneTackle2 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
                                     id="playAudio2"><i class="px-1 bi bi-play translate-top-2px"></i>Play</button>
-                                <button class="tackle toneTackle2 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
+                                <button disabled class="tackle toneTackle2 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
                                     id="pauseAudio2"><i class="px-1 bi bi-pause translate-top-2px"></i>Pause</button>
-                                <button class="tackle toneTackle2 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
+                                <button disabled class="tackle toneTackle2 btn btn-sm btn-secondary px-2 py-0 mt-2 white"
                                     id="stopAudio2"><i class="px-1 bi bi-stop-fill translate-top-2px"></i>Stop</button>
                                 <!-- some settings of alarm -->
                                 <p class="bold mTB10">Alarms setting</p>
+                                <hr>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input switch-input-left" type="checkbox" role="switch"
                                         id="deleteRingedAlarm" onclick="ringedAlarmDeleteOnOrOff(this)">
                                     <label class="form-check-label switch-label-right" for="deleteRingedAlarm">Delete
                                         ringed alarms
                                         automatically</label>
+                                </div>
+                                <!-- some settings of azan -->
+                                <p class="bold mTB10">Azans Setting</p>
+                                <hr>
+                                <p class="col-red"><b>That means adhans or azans will stay turned on from next time until you manually turn off</b></p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input switch-input-left" type="checkbox" role="switch"
+                                        id="autoTurnOnAzan" onclick="setAutoTurnOnAzanOnOrOff(this)">
+                                    <label class="form-check-label switch-label-right" for="autoTurnOnAzan">Auto Turn On Azan</label>
                                 </div>
                                 <!-- reset and others -->
                                 <h5 class="text-center mTB18">Reset and Others</h5>
@@ -787,25 +798,17 @@
             <div class="modal-dialog">
                 <div class="modal-content mode-changable-light">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Mobile Detected & Recommendation</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Alert</h1>
+                        <button type="button" class="btn-close mobileDetectedOk" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
-                        <h4>We recomment to use PC / Laptop / Any kind of computer to run this website.</h4>
-                        <p>This website highly integrated and made for Desktop / PC. If you use it in mobile. You might
-                            know following things ...</p>
-                        <li>Do not turn off your phone screen</li>
-                        <li>Keep your backgroun app refresh turn on, on Phone Setting</li>
-                        <li>Do not use to many apps in background, number of apps depend on your phone and ram as well
-                        </li>
-                        <li>Do not use to many tabs in your browser while using this website in background, umber of
-                            tabs depend on your phone and ram as well</li>
+                        <h4>This web app's some features only work on computers, so we recommend to use this app on computer</h4>
+                        
                     </div>
 
                     <div class="modal-footer">
-                        <button id="mobileDetectedOk" type="button" class="btn btn-success" data-bs-dismiss="modal">Ok,
-                            continue</button>
+                        <button class="mobileDetectedOk btn btn-success" type="button" data-bs-dismiss="modal">Ok</button>
                     </div>
                 </div>
             </div>
