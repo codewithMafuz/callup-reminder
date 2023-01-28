@@ -499,4 +499,8 @@
             width: 100%;
             padding: 20px;
         }
+       #audioRingingDisplay {
+          width : 300px!important;
+          left:75%!important;
+       }
     }
