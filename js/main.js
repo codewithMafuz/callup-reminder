@@ -1220,10 +1220,10 @@ function showAzanDisplay(selectedIndx = undefined, c = undefined) {
                 const y = convToTody(tms[i])
                 y.setTime(y.getTime() + i)
                 const v = JSON.parse(localStorage.getItem('autoTurnOnAzan'))
-                if (v === null || v === false) {
-                    addInLocalStorage(n[i], new Date(y), false, false)
-                } else {
+                if (v === true) {
                     addInLocalStorage(n[i], new Date(y), false, true)
+                } else {
+                    addInLocalStorage(n[i], new Date(y), false, false)
                 }
             }
         }
