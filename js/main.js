@@ -813,16 +813,17 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
                 if (getAlarmObjectPropertyValueById(i, 'isTurnedOn') === true) {
                     setAlarmObjectProperty(i, 'isTurnedOn', false)
                     setTimeout(() => {
+                        showAlarmList()
                         showAlarmList(true, false, i, true)
                     }, 60);
                 }
                 else {
                     setAlarmObjectProperty(i, 'isTurnedOn', true)
                     setTimeout(() => {
+                        showAlarmList()
                         showAlarmList(true, false, i, true)
                     }, 60);
                 }
-                checkAndRingAlarm()
             })
         })
         $('.accordion-item').each(function () {
