@@ -822,6 +822,7 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
                         showAlarmList(true, false, i, true)
                     }, 60);
                 }
+                checkAndRingAlarm()
             })
         })
         $('.accordion-item').each(function () {
