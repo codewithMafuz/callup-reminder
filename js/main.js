@@ -694,6 +694,7 @@ function editObject(e) {
         showAlarmList(true, false, false, true)
         showAlarmList(true)
         checkAndRingAlarm()
+        toReload()
 
         editDiv.remove()
     })
