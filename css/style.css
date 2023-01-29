@@ -2,26 +2,86 @@
         margin: 0;
         padding: 0;
         --bs-accordion-active-bg: white !important;
-
+        font-family: Arial, Helvetica, sans-serif;
     }
-    table td,table th {
+
+    table td,
+    table th {
         overflow: hidden;
         height: 14px;
         white-space: nowrap;
     }
+
     table * {
         text-align: center;
     }
+
     #allowAudioSound {
         width: 100%;
         padding: 20px;
     }
+
     .col-red {
         color: rgb(124, 41, 41);
     }
+
     :root {
 
         --bs-accordion-active-bg: white !important;
+    }
+
+    #editDiv {
+        z-index: 10000000000 !important;
+        background-color: white;
+        border-radius: 10px;
+        width: 40vw;
+        height: 70vh;
+        padding: 1vh 5vw 5vw;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    }
+
+    #editDiv .flex-center {
+        padding: 2px 10px;
+        justify-content: space-between;
+    }
+
+    #editDiv #setAlarmEdit,
+    #editDiv .card-subtitle {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #editDiv input {
+        width: 100% !important;
+    }
+
+    #editDiv .flex-center .btn-close {
+        border: 1px solid gray;
+        border-radius: 4px;
+        padding: 2px 5px;
+    }
+
+    .p-title {
+        font-size: 1rem;
+        opacity: .9;
+    }
+
+    #editAzan {
+        top: 28px !important;
+        right: 6px !important;
+    }
+
+    .prevInfo {
+        width: auto !important;
+        display: block !important;
+        text-align: left !important;
     }
 
     .w-45 {
@@ -131,6 +191,7 @@
         margin-top: 18px;
         margin-bottom: 18px;
     }
+
     .mTB10 {
         margin-top: 10px;
         margin-bottom: 10px;
@@ -147,9 +208,11 @@
         left: 15px;
         width: 100%;
     }
+
     .modal-body .accordion-body {
         height: auto !important;
     }
+
     .switch-input-left {
         user-select: none;
         position: absolute;
@@ -286,7 +349,7 @@
         color: #9d661c !important;
     }
 
-    #boxRemember h4 {
+    .boxRemember h4 {
         font-size: 1.2rem;
         height: 5px !important;
     }
@@ -312,8 +375,24 @@
         color: #9d661c;
     }
 
+    .boxRemember {
+        width: 100% !important;
+        border: 1px solid gray !important;
+        border-radius: 10px !important;
+        overflow-x: hidden !important;
+        padding: 10px;
+        letter-spacing: 1px !important;
+    }
+
+    .about-boxes {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap:8vh;
+    }
     @media screen and (max-width:1000px) {
-        
+
         .navbar {
             height: auto !important;
         }
@@ -423,9 +502,11 @@
             align-items: center;
             justify-content: center;
         }
+
         #totalAlarm {
             margin-left: 2px;
         }
+
         .table-wrap {
             overflow-x: scroll !important;
         }
@@ -441,21 +522,6 @@
 
         main {
             min-height: 80vh !important;
-        }
-
-        #boxRemember {
-            overflow-x: hidden !important;
-            padding: 3px 8px 6px 8px !important;
-            font-size: .8rem !important;
-        }
-
-        #boxRemember li {
-            font-size: .8rem;
-        }
-
-        #boxRemember .flex-right {
-            position: relative;
-            top: -15px;
         }
 
         #enterBox p {
@@ -492,18 +558,26 @@
             margin-top: 2px !important;
             margin-bottom: 2px !important;
         }
-        table td,table th {
+
+        table td,
+        table th {
             overflow: hidden;
             height: 14px;
             white-space: nowrap;
             font-size: 0.75rem;
         }
+
         #allowAudioSound {
             width: 100%;
             padding: 20px;
         }
-       #audioRingingDisplay {
-          width : 300px!important;
-          left:75%!important;
-       }
+
+        .boxRemember li {
+            font-size: .8rem;
+        }
+
+        #audioRingingDisplay {
+            width: 300px !important;
+            left: 75% !important;
+        }
     }

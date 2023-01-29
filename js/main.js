@@ -1,4 +1,5 @@
 // handling null for localstorage properties ----
+console.log('----  Do not run any unnecessary script else it can destroy this app ----')
 nullHandleForThisLocalStorageProperty('allAlarmSavedList', [])
 nullHandleForThisLocalStorageProperty('mode', {
     "modeClassName": "bg-light",
@@ -295,7 +296,7 @@ function btnsClearify() {
 function getDateTimeLocalToDateObj(value) {
     return new Date(value)
 }
-function addInLocalStorage(alarmNote, alarmDateTime, alarm = true, doTurnOn = true) {
+function addInLocalStorage(alarmNote, alarmDateTime, alarm = true, doTurnOn = true, endMax = false) {
     if (alarmNote.length === 0) {
         alarmNote = 'Alarm'
     }
@@ -306,7 +307,8 @@ function addInLocalStorage(alarmNote, alarmDateTime, alarm = true, doTurnOn = tr
         datetime: alarmDateTime,
         isRunningSetTimeout: false,
         isTurnedOn: doTurnOn,
-        isDoneRingingOrStarted: false
+        isDoneRingingOrStarted: false,
+        endMax: endMax
     }
     nullHandleForThisLocalStorageProperty('allAlarmSavedList')
     toSave.push(alarmObj)
@@ -374,17 +376,17 @@ function getDateObjectOfNextDayIfInFuture(datetimeObj) {
     }
     return new Date(n)
 }
-function getAlarmObjectPropertyValueById(d, p) {
+function getAlarmObjectPropertyValueById(d, p, _ = false) {
     const a = JSON.parse(localStorage.getItem('allAlarmSavedList'))
     const l = a.length
     for (let i = 0; i < l; i++) {
         const o = a[i]
         if (o.id === d) {
-            return o[p]
+            return !_ ? o[p] : o
         }
     }
 }
-function setAlarmObjectProperty(x, p, v) {
+function setAlarmObjectProperty(x, p, v, c = false) {
     const a = []
     const s = JSON.parse(localStorage.getItem('allAlarmSavedList'))
     const l = s.length
@@ -392,6 +394,9 @@ function setAlarmObjectProperty(x, p, v) {
         const o = s[i]
         if ((o !== null) && (o.id === x)) {
             o[p] = v
+            if (c) {
+                o['isDoneRingingOrStarted'] = false
+            }
             a.push(o)
         }
         else {
@@ -399,6 +404,7 @@ function setAlarmObjectProperty(x, p, v) {
         }
     }
     localStorage.setItem("allAlarmSavedList", JSON.stringify(a))
+
 }
 function setAllPastTimeCorrected() {
     if (JSON.parse(localStorage.getItem('allAlarmSavedList')).length !== 0) {
@@ -425,6 +431,16 @@ function setAllPastTimeCorrected() {
     }
     else {
         a = nullHandleForThisLocalStorageProperty('allAlarmSavedList', [])
+    }
+}
+function editButtonClearifyAzan() {
+    const s = JSON.parse(localStorage.getItem('allAlarmSavedList'))
+    const l = s.length
+    for (let i = 0; i < l; i++) {
+        const o = s[i]
+        if (o.isItForAzan && (new Date(o.datetime).getTime() < new Date().getTime())) {
+            document.getElementById(o.id).firstElementChild.firstElementChild.setAttribute('disabled', true)
+        }
     }
 }
 function correctIsRunnningSetTimeoutPropertyOfAllUnringed() {
@@ -600,7 +616,90 @@ function sortForGrouping(list) {
     });
     return sorted
 }
+function editObject(e) {
+    const Id = e.id,
+        info = getAlarmObjectPropertyValueById(Id, '', true),
+        itsAzan = info.isItForAzan ? true : false,
+        prevNotes = info.title,
+        prevDatetime = new Date(info.datetime),
+        editDiv = document.createElement('div')
+    editDiv.id = 'editDiv'
+    editDiv.innerHTML = `
+    <div class="card-body">
+    <div class="flex-center">
+        <h5 class="card-title my-3 text-center">${itsAzan ? 'Customize Azan Time' : 'Edit Alarm'}</h5>
+        <button class="btn btn-close" id="cancelEdit"></button>
+    </div>
+    <hr>
+    <h5 class="p-title my-2 text-center">${itsAzan ? "Azan's" : "Alarm's"} Info</h5>
+    <div class="prevInfo">
+    <h6 class="mb-2 text-muted">${itsAzan ? 'For ' + prevNotes : 'Title'} : ${prevNotes}</h6>
+    <h6 class="mb-2 text-muted">Datetime : ${prevDatetime.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</h6>
+    </div>
+    <hr>
+    ${!itsAzan ? `<h6 class="card-subtitle mb-2">Edit note title if you want</h6>
+    <input id="notesAlarmInputEdit" type="text" class="mb-3 w-50 form-control"
+    placeholder="Something.."></input>` : ''}
 
+    <h6 class="card-subtitle mb-2">Edit the date and time</h6>
+    <input id="alarmInputEdit" type="datetime-local" class="mb-3 w-50 form-control"></input>
+    <br>
+    <button disabled id="setAlarmEdit" class="btn btn-primary">Save Changes</button>
+    </div>
+
+    `
+    document.body.appendChild(editDiv)
+    const notesAlarmInputEdit = document.getElementById('notesAlarmInputEdit'),
+        alarmInputEdit = document.getElementById('alarmInputEdit'),
+        setAlarmEdit = document.getElementById('setAlarmEdit'),
+        cancelEdit = document.getElementById('cancelEdit'),
+        prevTime = prevDatetime.getTime()
+    let noteOk = false, datetimeOk = false
+    if (!itsAzan) {
+        notesAlarmInputEdit.addEventListener('input', function () {
+            const v = this.value
+            if (v !== prevNotes && v !== '') {
+                noteOk = true
+                setAlarmEdit.removeAttribute('disabled')
+            } else {
+                setAlarmEdit.setAttribute('disabled', true)
+            }
+        })
+    }
+    alarmInputEdit.addEventListener('input', function () {
+        const valueTime = new Date(this.value).getTime()
+        if (valueTime !== prevTime) {
+            if (itsAzan && (valueTime > prevTime) && (valueTime < info.endMax)) {
+                datetimeOk = true
+                setAlarmEdit.removeAttribute('disabled')
+            }
+            else {
+                datetimeOk = true
+                setAlarmEdit.removeAttribute('disabled')
+            }
+        } else {
+            setAlarmEdit.setAttribute('disabled', true)
+        }
+    })
+
+    setAlarmEdit.addEventListener('click', function () {
+        if (noteOk) {
+            setAlarmObjectProperty(Id, 'title', notesAlarmInputEdit.value)
+        }
+        if (datetimeOk) {
+            setAlarmObjectProperty(Id, 'datetime', alarmInputEdit.value, true)
+        }
+        showAlarmList(true, false, false, true)
+        showAlarmList()
+
+        editDiv.remove()
+    })
+    cancelEdit.addEventListener('click', function () {
+        editDiv.remove()
+    })
+
+
+}
 function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMoment, showAzan = false) {
     const filtering = filteringBox.innerText
     const td = new Date()
@@ -660,6 +759,7 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
             <div class="position-relative">
             <button id="setTomorrowBtn${id}" class="btn btn-sm btn-secondary mt-3 position-absolute start-0" title="Set alarm for next day at this time" onclick="setAlarm(getDateObjectOfNextDayIfInFuture('${d}'),'${o.title}')">Set For Next Day</button>
             <button id="deleteBtnAlarm${num}" class="btn btn-danger  btn-sm mt-3 deleteAlarm float-right position-absolute end-0" title="Delete this alarm" onclick="hideIt(this);deleteAlarm(this)">Delete alarm</button>
+            <button id="editAlarm" onclick="editObject(this.parentElement.parentElement.parentElement)" class="btn btn-secondary  btn-sm mt-3 float-right position-absolute start-50" title="Edit This Alarm">Edit Alarm</button>
             </div>
             </div>
             </div>
@@ -682,8 +782,7 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
             </div>
             <div class="accordion-collapse ${(turnedOnMoment === id || collapseIds.includes(id)) ? 'show' : ''} collapse alarmBoxPieces" id="${id}">
             <div class="accordion-body position-relative azanAccordionBody">
-            <div class="position-absolute end-0">
-            </div>
+            <button id="editAzan" onclick="editObject(this.parentElement.parentElement)" class="btn btn-secondary  btn-sm mt-3 float-right position-absolute end-0 top-0 my-1" title="Customize">Customize timing</button>
             <p><b>Date and time :</b> ${d.toLocaleString(undefined, { dateStyle: 'long', timeStyle: 'short' })}</p>
             <div class="form-check form-switch">
             <input title="Turn on or off this alarm" class="turnOnOrOff form-check-input switches" type="checkbox" role="switch" id="flexSwitchCheckDefault${i}" ${on ? 'checked' : ''} ${o.isDoneRingingOrStarted ? 'disabled' : ''}>
@@ -692,9 +791,13 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
              </div>
             </div>
             `
+
                 }
             }
         });
+        if (showAzan) {
+            editButtonClearifyAzan()
+        }
         // effect of last added
         if (setMoment) {
             const ltAlrm = $('#latestOneAlarm')
@@ -1214,16 +1317,17 @@ function showAzanDisplay(selectedIndx = undefined, c = undefined) {
 
         function setAzanTimes() {
             const n = ['Isha', 'Magrib', 'Asar', 'Dhuhor', 'Fajr']
+            const g = [7200000, 600000, 2100000, 3600000, 3000000]
             const tms = Object.values(JSON.parse(localStorage.getItem('todayTimings'))).reverse()
             const l = tms.length
+            const v = JSON.parse(localStorage.getItem('autoTurnOnAzan'))
             for (let i = 0; i < l; i++) {
                 const y = convToTody(tms[i])
                 y.setTime(y.getTime() + i)
-                const v = JSON.parse(localStorage.getItem('autoTurnOnAzan'))
                 if (v === true) {
-                    addInLocalStorage(n[i], new Date(y), false, true)
+                    addInLocalStorage(n[i], new Date(y), false, true, y.getTime() + g[i])
                 } else {
-                    addInLocalStorage(n[i], new Date(y), false, false)
+                    addInLocalStorage(n[i], new Date(y), false, false, y.getTime() + g[i])
                 }
             }
         }
