@@ -396,6 +396,7 @@ function setAlarmObjectProperty(x, p, v, c = false) {
             o[p] = v
             if (c) {
                 o['isDoneRingingOrStarted'] = false
+                o['isTurnedOn'] = true
             }
             a.push(o)
         }
@@ -691,6 +692,7 @@ function editObject(e) {
         }
         showAlarmList(true, false, false, true)
         showAlarmList()
+        checkAndRingAlarm()
 
         editDiv.remove()
     })
