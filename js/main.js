@@ -395,6 +395,7 @@ function setAlarmObjectProperty(x, p, v, c = false) {
         if ((o !== null) && (o.id === x)) {
             o[p] = v
             if (c) {
+                o['isRunningSetTimeout'] = false
                 o['isDoneRingingOrStarted'] = false
                 o['isTurnedOn'] = true
             }
