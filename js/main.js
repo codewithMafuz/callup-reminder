@@ -395,7 +395,6 @@ function setAlarmObjectProperty(x, p, v, c = false) {
         if ((o !== null) && (o.id === x)) {
             o[p] = v
             if (c) {
-                o['isRunningSetTimeout'] = false
                 o['isDoneRingingOrStarted'] = false
                 o['isTurnedOn'] = true
             }
@@ -692,7 +691,7 @@ function editObject(e) {
             setAlarmObjectProperty(Id, 'datetime', alarmInputEdit.value, true)
         }
         showAlarmList(true, false, false, true)
-        showAlarmList()
+        showAlarmList(true)
         checkAndRingAlarm()
 
         editDiv.remove()
