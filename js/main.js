@@ -395,7 +395,9 @@ function setAlarmObjectProperty(x, p, v, c = false) {
         if ((o !== null) && (o.id === x)) {
             o[p] = v
             if (c) {
+                o['isRunningSetTimeout'] = false
                 o['isDoneRingingOrStarted'] = false
+                o['isTurnedOn'] = true
             }
             a.push(o)
         }
@@ -591,6 +593,7 @@ function checkAndRingAlarm() {
                         }
                         else {
                             alarmAudio.src = JSON.parse(localStorage.getItem('defaultAlarmTone')).src
+                            // console.log('yes')
                             displayAudioRinging(true, t)
                         }
                     }
@@ -690,7 +693,10 @@ function editObject(e) {
             setAlarmObjectProperty(Id, 'datetime', alarmInputEdit.value, true)
         }
         showAlarmList(true, false, false, true)
-        showAlarmList()
+        showAlarmList(true)
+        checkAndRingAlarm()
+        correctIsRunnningSetTimeoutPropertyOfAllUnringed()
+        // toReload()
 
         editDiv.remove()
     })
@@ -736,11 +742,15 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
                 const d = new Date(o.datetime)
                 const id = o.id
                 const on = o.isTurnedOn ? true : false
-                setAlarmList.innerHTML +=
+                const e = document.createElement('div')
+                e.className = 'accordion-item'
+                if (num === 0) {
+                    e.id = 'latestOneAlarm'
+                }
+                e.innerHTML =
                     `
             ${grouping ? getGroupingResult(td, d) : ''}
 
-            <div class="accordion-item" id=${num === 0 ? 'latestOneAlarm' : ''}>
             <h2 class="accordion-button alarmBoxPieces" data-bs-target="#${id}" data-bs-toggle="collapse">${num + 1}. ${o.title}
             <span class="mx-4 badge text-bg-success m-hide">${d.toLocaleString(undefined, { timeStyle: 'short' })}</span>
             <span class="mx-4 badge text-bg-success m-hide">${d.toLocaleString(undefined, { dateStyle: 'medium' })}</span>
@@ -762,8 +772,8 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
             <button id="editAlarm" onclick="editObject(this.parentElement.parentElement.parentElement)" class="btn btn-secondary  btn-sm mt-3 float-right position-absolute start-50" title="Edit This Alarm">Edit Alarm</button>
             </div>
             </div>
-            </div>
             `
+                setAlarmList.appendChild(e)
 
             }
             else {
@@ -771,16 +781,17 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
                     const d = new Date(o.datetime)
                     const id = o.id
                     const on = o.isTurnedOn ? true : false
-                    azanBox.innerHTML +=
+                    const e = document.createElement('div')
+                    e.className = 'accordion-item border azanAccordionItem'
+                    e.innerHTML =
 
                         `
-            <div class="accordion-item border azanAccordionItem">
             <h2 class="px-4 accordion-button alarmBoxPieces" data-bs-target="#${id}" data-bs-toggle="collapse">${o.title}
             <span class="mx-4 badge text-bg-success m-hide">${d.toLocaleString(undefined, { timeStyle: 'short' })}</span>
             <span class="mx-4 badge text-bg-${on ? 'success' : 'secondary'} m-px">${on ? 'On' : 'Off'}</span>
             </h2>
             </div>
-            <div class="accordion-collapse ${(turnedOnMoment === id || collapseIds.includes(id)) ? 'show' : ''} collapse alarmBoxPieces" id="${id}">
+            <div class="az accordion-collapse ${(turnedOnMoment === id || collapseIds.includes(id)) ? 'show' : ''} collapse alarmBoxPieces" id="${id}">
             <div class="accordion-body position-relative azanAccordionBody">
             <button id="editAzan" onclick="editObject(this.parentElement.parentElement)" class="btn btn-secondary  btn-sm mt-3 float-right position-absolute end-0 top-0 my-1" title="Customize">Customize timing</button>
             <p><b>Date and time :</b> ${d.toLocaleString(undefined, { dateStyle: 'long', timeStyle: 'short' })}</p>
@@ -789,9 +800,8 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
             <label class="form-check-label" for="flexSwitchCheckDefault${i}" style="user-select:none;" title="Turn on or off this alarm">Azan on</label>
             </div>
              </div>
-            </div>
             `
-
+                    azanBox.appendChild(e)
                 }
             }
         });
@@ -813,12 +823,14 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
                 if (getAlarmObjectPropertyValueById(i, 'isTurnedOn') === true) {
                     setAlarmObjectProperty(i, 'isTurnedOn', false)
                     setTimeout(() => {
+                        showAlarmList()
                         showAlarmList(true, false, i, true)
                     }, 60);
                 }
                 else {
                     setAlarmObjectProperty(i, 'isTurnedOn', true)
                     setTimeout(() => {
+                        showAlarmList()
                         showAlarmList(true, false, i, true)
                     }, 60);
                 }

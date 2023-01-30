@@ -375,6 +375,14 @@
         color: #9d661c;
     }
 
+    .az {
+        z-index: 10000000000;
+        background-color: white;
+        position: relative !important;
+        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+        ;
+    }
+
     .boxRemember {
         width: 100% !important;
         border: 1px solid gray !important;
@@ -389,8 +397,9 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        gap:8vh;
+        gap: 8vh;
     }
+
     @media screen and (max-width:1000px) {
 
         .navbar {
