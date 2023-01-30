@@ -693,10 +693,7 @@ function editObject(e) {
             setAlarmObjectProperty(Id, 'datetime', alarmInputEdit.value, true)
         }
         showAlarmList(true, false, false, true)
-        showAlarmList(true)
-        checkAndRingAlarm()
-        correctIsRunnningSetTimeoutPropertyOfAllUnringed()
-        // toReload()
+        showAlarmList()
 
         editDiv.remove()
     })
