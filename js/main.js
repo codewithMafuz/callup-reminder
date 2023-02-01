@@ -718,7 +718,7 @@ function editObject(e) {
     cancelEdit.addEventListener('click', function () {
         editDiv.remove()
     })
-
+toReload()
 
 }
 function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMoment, showAzan = false) {
