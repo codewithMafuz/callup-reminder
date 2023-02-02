@@ -705,8 +705,7 @@ function editObject(e) {
         if (datetimeOk) {
             setAlarmObjectProperty(Id, 'datetime', alarmInputEdit.value, true)
         }
-        clearAllTimeouts()
-        correctIsRunnningSetTimeoutPropertyOfAllUnringed()
+
         if (itsAzan) {
             showAlarmList(true)
             showAlarmList(true, false, false, true)
