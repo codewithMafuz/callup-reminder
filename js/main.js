@@ -787,7 +787,6 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
             <div class="position-relative">
             <button id="setTomorrowBtn${id}" class="btn btn-sm btn-secondary mt-3 position-absolute start-0" title="Set alarm for next day at this time" onclick="setAlarm(getDateObjectOfNextDayIfInFuture('${d}'),'${o.title}')">Set For Next Day</button>
             <button id="deleteBtnAlarm${num}" class="btn btn-danger  btn-sm mt-3 deleteAlarm float-right position-absolute end-0" title="Delete this alarm" onclick="hideIt(this);deleteAlarm(this)">Delete alarm</button>
-            <button id="editAlarm" onclick="editObject(this.parentElement.parentElement.parentElement)" class="btn btn-secondary  btn-sm mt-3 float-right position-absolute start-50" title="Edit This Alarm">Edit Alarm</button>
             </div>
             </div>
             `
@@ -811,7 +810,7 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
             </div>
             <div class="az accordion-collapse ${(turnedOnMoment === id || collapseIds.includes(id)) ? 'show' : ''} collapse alarmBoxPieces" id="${id}">
             <div class="accordion-body position-relative azanAccordionBody">
-            <button id="editAzan" onclick="editObject(this.parentElement.parentElement)" class="btn btn-secondary  btn-sm mt-3 float-right position-absolute end-0 top-0 my-1" title="Customize">Customize timing</button>
+  
             <p><b>Date and time :</b> ${d.toLocaleString(undefined, { dateStyle: 'long', timeStyle: 'short' })}</p>
             <div class="form-check form-switch">
             <input title="Turn on or off this alarm" class="turnOnOrOff form-check-input switches" type="checkbox" role="switch" id="flexSwitchCheckDefault${i}" ${on ? 'checked' : ''} ${o.isDoneRingingOrStarted ? 'disabled' : ''}>
