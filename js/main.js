@@ -98,7 +98,7 @@ function fmt(_) {
 }
 function removeUnknownLocalStorageProperties() {
     const l = localStorage.length
-    const t = ['dontShowAgain','isEndMaxDone', 'allAlarmSavedList', 'defaultAlarmTone', 'defaultAzanTone', 'mode', 'setting', 'aboutAzan', 'userInfo', 'todayTimings', 'autoTurnOnAzan']
+    const t = ['dontShowAgain', 'isEndMaxDone', 'allAlarmSavedList', 'defaultAlarmTone', 'defaultAzanTone', 'mode', 'setting', 'aboutAzan', 'userInfo', 'todayTimings', 'autoTurnOnAzan']
     for (let i = 0; i < l; i++) {
         const e = localStorage.key(i)
         if (!t.includes(e)) {
@@ -836,12 +836,18 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
             const E = this
             const e = $(E)
             $(e).click(function () {
+                const h = this.offsetHeight - this.clientHeight
+                sessionStorage.setItem('s', JSON.stringify(h))
                 const i = E.parentElement.parentElement.parentElement.id
                 if (getAlarmObjectPropertyValueById(i, 'isTurnedOn') === true) {
                     setAlarmObjectProperty(i, 'isTurnedOn', false)
                     setTimeout(() => {
                         showAlarmList()
                         showAlarmList(true, false, i, true)
+                        if (getAlarmObjectPropertyValueById(i, 'isItForAzan') === false) {
+                            const _ = JSON.parse(sessionStorage.s)
+                            doScroll(_)
+                        }
                     }, 60);
                 }
                 else {
@@ -849,8 +855,13 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
                     setTimeout(() => {
                         showAlarmList()
                         showAlarmList(true, false, i, true)
+                        if (getAlarmObjectPropertyValueById(i, 'isItForAzan') === false) {
+                            const _ = JSON.parse(sessionStorage.getItem('s'))
+                            doScroll(_)
+                        }
                     }, 60);
                 }
+
             })
         })
         $('.accordion-item').each(function () {
@@ -880,6 +891,9 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
     totalAlarm.innerText = l
     showMsgIfNoAlarm()
     sortBeutify()
+}
+function doScroll(s) {
+    window.scrollBy(0, s)
 }
 function setAlarm(dateAndTimeToSet, note) {
 
