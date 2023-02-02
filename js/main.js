@@ -713,8 +713,9 @@ function editObject(e) {
             showAlarmList(true, false, false, true)
             showAlarmList(true)
         }
-        checkAndRingAlarm()
         editDiv.remove()
+        correctIsRunnningSetTimeoutPropertyOfAllUnringed()
+        checkAndRingAlarm()
     })
     cancelEdit.addEventListener('click', function () {
         editDiv.remove()
