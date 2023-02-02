@@ -309,7 +309,7 @@ function addInLocalStorage(alarmNote, alarmDateTime, alarm = true, doTurnOn = tr
         isTurnedOn: doTurnOn,
         isDoneRingingOrStarted: false,
         endMax: endMax,
-        realTime : realTime
+        realTime: realTime
     }
     nullHandleForThisLocalStorageProperty('allAlarmSavedList')
     toSave.push(alarmObj)
@@ -458,6 +458,7 @@ function correctIsRunnningSetTimeoutPropertyOfAllUnringed() {
         n.push(a)
     }
     localStorage.setItem("allAlarmSavedList", JSON.stringify(n))
+    checkAndRingAlarm()
 }
 function tackle(d = true) {
     tcle.forEach(function (_) {
@@ -643,7 +644,7 @@ function editObject(e) {
     <h5 class="p-title my-2 text-center">${itsAzan ? "Azan's" : "Alarm's"} Info</h5>
     <div class="prevInfo">
     <h6 class="mb-2 text-muted">${itsAzan ? 'For ' : 'Title'} : ${prevNotes}</h6>
-    ${itsAzan ? `<h6 class="mb-2 text-muted">Real Time Start : ${new Date(real).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</h6>`:''}
+    ${itsAzan ? `<h6 class="mb-2 text-muted">Real Time Start : ${new Date(real).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</h6>` : ''}
     <h6 class="mb-2 text-muted">Datetime : ${prevDatetime.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</h6>
     </div>
     <hr>
@@ -704,7 +705,8 @@ function editObject(e) {
         if (datetimeOk) {
             setAlarmObjectProperty(Id, 'datetime', alarmInputEdit.value, true)
         }
-
+        clearAllTimeouts()
+        correctIsRunnningSetTimeoutPropertyOfAllUnringed()
         if (itsAzan) {
             showAlarmList(true)
             showAlarmList(true, false, false, true)
@@ -839,14 +841,18 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
                     setAlarmObjectProperty(i, 'isTurnedOn', false)
                     setTimeout(() => {
                         showAlarmList()
+                        correctIsRunnningSetTimeoutPropertyOfAllUnringed()
                         showAlarmList(true, false, i, true)
+                        checkAndRingAlarm()
                     }, 60);
                 }
                 else {
                     setAlarmObjectProperty(i, 'isTurnedOn', true)
                     setTimeout(() => {
                         showAlarmList()
+                        correctIsRunnningSetTimeoutPropertyOfAllUnringed()
                         showAlarmList(true, false, i, true)
+                        checkAndRingAlarm()
                     }, 60);
                 }
             })
@@ -878,6 +884,7 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
     totalAlarm.innerText = l
     showMsgIfNoAlarm()
     sortBeutify()
+    correctIsRunnningSetTimeoutPropertyOfAllUnringed()
 }
 function setAlarm(dateAndTimeToSet, note) {
 
@@ -1061,7 +1068,7 @@ jQuery(document).ready(function ($) {
     // delete all alarms prompt
     // =====================
     $('#cancelConfirmation').click(function () {
-        $('.btn-close').click()
+        $('#btn-close-delete-all-alarms').click()
         $('body').css({ 'overflow-y': 'scroll !important' })
     })
     $('#acceptConfirmation').click(function () {
@@ -1395,7 +1402,7 @@ function setAutoTurnOnAzanOnOrOff(e) {
     removeAzanObjectsFromSaved()
     toReload()
 }
-
+cancelConfirmation
 // execute functions >>>>>>>>>>>>>>>>>
 jQuery(document).ready(function () {
     // input system of country city 
