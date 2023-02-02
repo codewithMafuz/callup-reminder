@@ -98,7 +98,7 @@ function fmt(_) {
 }
 function removeUnknownLocalStorageProperties() {
     const l = localStorage.length
-    const t = ['dontShowAgain', 'isEndMaxDone', 'allAlarmSavedList', 'defaultAlarmTone', 'defaultAzanTone', 'mode', 'setting', 'aboutAzan', 'userInfo', 'todayTimings', 'autoTurnOnAzan']
+    const t = ['fetchedLastTime', 'dontShowAgain', 'isEndMaxDone', 'allAlarmSavedList', 'defaultAlarmTone', 'defaultAzanTone', 'mode', 'setting', 'aboutAzan', 'userInfo', 'todayTimings', 'autoTurnOnAzan']
     for (let i = 0; i < l; i++) {
         const e = localStorage.key(i)
         if (!t.includes(e)) {
@@ -1341,6 +1341,7 @@ function showAzanDisplay(selectedIndx = undefined, c = undefined) {
         delete t.Firstthird
         delete t.Lastthird
         localStorage.setItem('todayTimings', JSON.stringify(t))
+        localStorage.setItem('fetchedLastTime', JSON.stringify(new Date().getTime()))
         let x = 0;
         for (let i = 0; i < len; i++) {
             const di = d[i]
@@ -1380,9 +1381,9 @@ function showAzanDisplay(selectedIndx = undefined, c = undefined) {
             }
         }
 
-        if (getAzanObjects().length === 0 || ((new Date(JSON.parse(localStorage.getItem('aboutAzan')).lastDataFetched).getDate() !== ty.getDate()))) {
-            setAzanTimes()
-        }
+        removeAllAzanObjsFromLocalStorage()
+        setAzanTimes()
+
         showAlarmList(false, false, false, true)
 
     } catch (e) {
@@ -1488,6 +1489,9 @@ jQuery(document).ready(function () {
             localStorage.setItem('dontShowAgain', JSON.stringify(true))
         }
     })
+
+
+
 })
 
 

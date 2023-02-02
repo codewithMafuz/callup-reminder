@@ -48,7 +48,12 @@ table * {
     padding: 2px 10px;
     justify-content: space-between;
 }
-
+.flex-center-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
 #editDiv #setAlarmEdit,
 #editDiv .card-subtitle {
     width: 100%;
@@ -396,16 +401,28 @@ td {
     border: 1px solid gray !important;
     border-radius: 10px !important;
     overflow-x: hidden !important;
-    padding: 10px;
-    letter-spacing: 1px !important;
+    height: auto !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
 }
-
-.about-boxes {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 8vh;
+.boxRemember * {
+    line-height: 1.8;
+}
+.link-a {
+    text-decoration: none;
+    color: #9d661c;
+}
+.link-a:hover, .link-a:active, .link-a:focus {
+    text-decoration: underline;
+    color: #9d661c;
+}
+.boxRemember h3 {
+    border-bottom: 1px solid darkgray;
+    padding-bottom: 11px !important;
+    color: #9d661c;
+}
+.boxRemember h4 {
+    color: #9d661c;
 }
 #dontShowAgain, .form-dontShowAgain {
     font-size: 1.5rem;    
