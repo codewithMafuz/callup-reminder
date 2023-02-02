@@ -707,7 +707,7 @@ function editObject(e) {
         }
 
         if (itsAzan) {
-            showAlpr0armList(true)
+            showAlarmList(true)
             showAlarmList(true, false, false, true)
         } else {
             showAlarmList(true, false, false, true)
