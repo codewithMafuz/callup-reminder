@@ -98,7 +98,7 @@ function fmt(_) {
 }
 function removeUnknownLocalStorageProperties() {
     const l = localStorage.length
-    const t = ['isEndMaxDone', 'allAlarmSavedList', 'defaultAlarmTone', 'defaultAzanTone', 'mode', 'setting', 'aboutAzan', 'userInfo', 'todayTimings', 'autoTurnOnAzan']
+    const t = ['lastShownOf','isEndMaxDone', 'allAlarmSavedList', 'defaultAlarmTone', 'defaultAzanTone', 'mode', 'setting', 'aboutAzan', 'userInfo', 'todayTimings', 'autoTurnOnAzan']
     for (let i = 0; i < l; i++) {
         const e = localStorage.key(i)
         if (!t.includes(e)) {
@@ -716,6 +716,7 @@ function editObject(e) {
         editDiv.remove()
         correctIsRunnningSetTimeoutPropertyOfAllUnringed()
         checkAndRingAlarm()
+        toReload()
     })
     cancelEdit.addEventListener('click', function () {
         editDiv.remove()
@@ -1473,7 +1474,17 @@ jQuery(document).ready(function () {
         alarmAudio.currentTime = 0
     })
 })
-
+let nw = new Date().getDate()
+const check = JSON.parse(localStorage.getItem('aboutAzan'))
+if (check !== null){
+    const latest = check['lastDataFetched'].getDate()
+    if (nw > latest){
+        localStorage.removeItem('aboutAzan')
+        localStorage.removeItem('todayTimings')
+        localStorage.removeItem('userInfo')
+        getUserGeoLocation()
+    }
+}
 
 // ==================================
 
