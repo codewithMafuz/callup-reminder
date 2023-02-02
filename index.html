@@ -121,7 +121,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Deleting Alert</h1>
-                                    <button type="button" id="btn-close-delete-all-alarms" class="btn-close" data-bs-dismiss="modal"
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -796,6 +796,12 @@
                     </div>
 
                     <div class="modal-footer">
+                        <div class="form-check form-dontShowAgain">
+                            <input class="form-check-input" type="checkbox" value="" id="dontShowAgain">
+                            <label class="form-check-label" for="dontShowAgain">
+                                Allow, I will remember, don't show again
+                            </label>
+                        </div>
                         <button id="allowAudioSound" type="button" class="btn btn-success"
                             data-bs-dismiss="modal">Allow</button>
                     </div>

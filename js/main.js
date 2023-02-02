@@ -98,7 +98,7 @@ function fmt(_) {
 }
 function removeUnknownLocalStorageProperties() {
     const l = localStorage.length
-    const t = ['lastShownOf','isEndMaxDone', 'allAlarmSavedList', 'defaultAlarmTone', 'defaultAzanTone', 'mode', 'setting', 'aboutAzan', 'userInfo', 'todayTimings', 'autoTurnOnAzan']
+    const t = ['dontShowAgain','isEndMaxDone', 'allAlarmSavedList', 'defaultAlarmTone', 'defaultAzanTone', 'mode', 'setting', 'aboutAzan', 'userInfo', 'todayTimings', 'autoTurnOnAzan']
     for (let i = 0; i < l; i++) {
         const e = localStorage.key(i)
         if (!t.includes(e)) {
@@ -458,7 +458,6 @@ function correctIsRunnningSetTimeoutPropertyOfAllUnringed() {
         n.push(a)
     }
     localStorage.setItem("allAlarmSavedList", JSON.stringify(n))
-    checkAndRingAlarm()
 }
 function tackle(d = true) {
     tcle.forEach(function (_) {
@@ -586,19 +585,18 @@ function checkAndRingAlarm() {
             setTimeout(() => {
                 if ((getAlarmObjectPropertyValueById(i, 'isTurnedOn')) && (!(getAlarmObjectPropertyValueById(i, 'isRunningSetTimeout')))) {
                     setAlarmObjectProperty(i, 'isRunningSetTimeout', false)
-                    if (!(runningAudio)) {
-                        runningAudio = true
-                        if (getAlarmObjectPropertyValueById(i, 'isItForAzan')) {
-                            azanAudio.src = JSON.parse(localStorage.getItem('defaultAzanTone')).src
-                            const d = JSON.parse(localStorage.getItem('defaultAzanTone')).nthNumberSelected === 0 ? 247500 : 152500
-                            displayAudioRinging(false, t, d)
-                        }
-                        else {
-                            alarmAudio.src = JSON.parse(localStorage.getItem('defaultAlarmTone')).src
-                            // console.log('yes')
-                            displayAudioRinging(true, t)
-                        }
+                    runningAudio = true
+                    if (getAlarmObjectPropertyValueById(i, 'isItForAzan')) {
+                        azanAudio.src = JSON.parse(localStorage.getItem('defaultAzanTone')).src
+                        const d = JSON.parse(localStorage.getItem('defaultAzanTone')).nthNumberSelected === 0 ? 247500 : 152500
+                        displayAudioRinging(false, t, d)
                     }
+                    else {
+                        alarmAudio.src = JSON.parse(localStorage.getItem('defaultAlarmTone')).src
+                        // console.log('yes')
+                        displayAudioRinging(true, t)
+                    }
+
                     //----
                     setAlarmObjectProperty(i, 'isTurnedOn', false)
                     setAlarmObjectProperty(i, 'isDoneRingingOrStarted', true)
@@ -705,6 +703,9 @@ function editObject(e) {
         if (datetimeOk) {
             setAlarmObjectProperty(Id, 'datetime', alarmInputEdit.value, true)
         }
+        if (noteOk || datetimeOk) {
+            toReload()
+        }
 
         if (itsAzan) {
             showAlarmList(true)
@@ -713,10 +714,8 @@ function editObject(e) {
             showAlarmList(true, false, false, true)
             showAlarmList(true)
         }
-        editDiv.remove()
-        correctIsRunnningSetTimeoutPropertyOfAllUnringed()
         checkAndRingAlarm()
-        toReload()
+        editDiv.remove()
     })
     cancelEdit.addEventListener('click', function () {
         editDiv.remove()
@@ -787,6 +786,7 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
             <div class="position-relative">
             <button id="setTomorrowBtn${id}" class="btn btn-sm btn-secondary mt-3 position-absolute start-0" title="Set alarm for next day at this time" onclick="setAlarm(getDateObjectOfNextDayIfInFuture('${d}'),'${o.title}')">Set For Next Day</button>
             <button id="deleteBtnAlarm${num}" class="btn btn-danger  btn-sm mt-3 deleteAlarm float-right position-absolute end-0" title="Delete this alarm" onclick="hideIt(this);deleteAlarm(this)">Delete alarm</button>
+            <button id="editAlarm" onclick="editObject(this.parentElement.parentElement.parentElement)" class="btn btn-secondary  btn-sm mt-3 float-right position-absolute start-50" title="Edit This Alarm">Edit Alarm</button>
             </div>
             </div>
             `
@@ -810,7 +810,7 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
             </div>
             <div class="az accordion-collapse ${(turnedOnMoment === id || collapseIds.includes(id)) ? 'show' : ''} collapse alarmBoxPieces" id="${id}">
             <div class="accordion-body position-relative azanAccordionBody">
-  
+            <button id="editAzan" onclick="editObject(this.parentElement.parentElement)" class="btn btn-secondary  btn-sm mt-3 float-right position-absolute end-0 top-0 my-1" title="Customize">Customize timing</button>
             <p><b>Date and time :</b> ${d.toLocaleString(undefined, { dateStyle: 'long', timeStyle: 'short' })}</p>
             <div class="form-check form-switch">
             <input title="Turn on or off this alarm" class="turnOnOrOff form-check-input switches" type="checkbox" role="switch" id="flexSwitchCheckDefault${i}" ${on ? 'checked' : ''} ${o.isDoneRingingOrStarted ? 'disabled' : ''}>
@@ -841,18 +841,14 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
                     setAlarmObjectProperty(i, 'isTurnedOn', false)
                     setTimeout(() => {
                         showAlarmList()
-                        correctIsRunnningSetTimeoutPropertyOfAllUnringed()
                         showAlarmList(true, false, i, true)
-                        checkAndRingAlarm()
                     }, 60);
                 }
                 else {
                     setAlarmObjectProperty(i, 'isTurnedOn', true)
                     setTimeout(() => {
                         showAlarmList()
-                        correctIsRunnningSetTimeoutPropertyOfAllUnringed()
                         showAlarmList(true, false, i, true)
-                        checkAndRingAlarm()
                     }, 60);
                 }
             })
@@ -884,7 +880,6 @@ function showAlarmList(onlyDisplayShowing = false, setMoment = false, turnedOnMo
     totalAlarm.innerText = l
     showMsgIfNoAlarm()
     sortBeutify()
-    correctIsRunnningSetTimeoutPropertyOfAllUnringed()
 }
 function setAlarm(dateAndTimeToSet, note) {
 
@@ -1010,10 +1005,6 @@ $(window).on("load", function () {
 
     correctIsRunnningSetTimeoutPropertyOfAllUnringed()
     btnsClearify()
-    document.body.addEventListener('click', function () {
-        showAlarmList()
-        document.getElementById('allowAudioSound').click()
-    }, { once: true })
     dnShowing = true
     // set ing mode on load 
     let mode = JSON.parse(localStorage.getItem('mode'))
@@ -1039,6 +1030,7 @@ $(window).on("load", function () {
 
 jQuery(document).ready(function ($) {
     // Permissions
+    let dontShowAgain = JSON.parse(localStorage.getItem('dontShowAgain'))
     $('.mobileDetectedOk').click(function () {
         location = 'https://www.google.com/'
     })
@@ -1053,10 +1045,14 @@ jQuery(document).ready(function ($) {
                 clearAllTimeouts()
             }
             else {
-                $('#askForPermissionToPlayAudioPrompt').modal('show')
+                if (dontShowAgain === null) {
+                    $('#askForPermissionToPlayAudioPrompt').modal('show')
+                }
             }
         }).catch(function (_) {
-            $('#askForPermissionToPlayAudioPrompt').modal('show')
+            if (dontShowAgain === null) {
+                $('#askForPermissionToPlayAudioPrompt').modal('show')
+            }
         })
 
     // events on switch inputs
@@ -1068,7 +1064,7 @@ jQuery(document).ready(function ($) {
     // delete all alarms prompt
     // =====================
     $('#cancelConfirmation').click(function () {
-        $('#btn-close-delete-all-alarms').click()
+        $('.btn-close').click()
         $('body').css({ 'overflow-y': 'scroll !important' })
     })
     $('#acceptConfirmation').click(function () {
@@ -1402,7 +1398,7 @@ function setAutoTurnOnAzanOnOrOff(e) {
     removeAzanObjectsFromSaved()
     toReload()
 }
-cancelConfirmation
+
 // execute functions >>>>>>>>>>>>>>>>>
 jQuery(document).ready(function () {
     // input system of country city 
@@ -1472,18 +1468,14 @@ jQuery(document).ready(function () {
         alarmAudio.pause()
         alarmAudio.currentTime = 0
     })
+    // more
+    $('#allowAudioSound').click(function () {
+        if (document.getElementById('dontShowAgain').checked) {
+            localStorage.setItem('dontShowAgain', JSON.stringify(true))
+        }
+    })
 })
-let nw = new Date().getDate()
-const check = JSON.parse(localStorage.getItem('aboutAzan'))
-if (check !== null){
-    const latest = check['lastDataFetched'].getDate()
-    if (nw > latest){
-        localStorage.removeItem('aboutAzan')
-        localStorage.removeItem('todayTimings')
-        localStorage.removeItem('userInfo')
-        getUserGeoLocation()
-    }
-}
+
 
 // ==================================
 
@@ -1524,7 +1516,6 @@ function toReload() {
 setTimeout(() => {
     toReload()
 }, 259200000);
-
 
 
 
