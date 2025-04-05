@@ -881,7 +881,7 @@ function toReload() {
     location.reload();
 }
 setAlarmButton.addEventListener("click", function () {
-    setAlarm(alarmTimeInput.value, alarmNotesInput.value);
+    setAlarm(alarmTimeInput.value, alarmNotesInput.value); 
 }),
     $(window).on("load", function () {
         correctIsRunnningSetTimeoutPropertyOfAllUnringed(), btnsClearify(), (dnShowing = !0);
